@@ -17,7 +17,6 @@ import {
   Volume2,
   VolumeX,
   Sparkles,
-  Key,
   RefreshCw,
   FolderArchive,
   Layers,
@@ -28,8 +27,6 @@ export function App() {
   const [graveyard, setGraveyard] = useState<CrematedTab[]>([]);
   const [activeTab, setActiveTab] = useState<'terrarium' | 'graveyard'>('terrarium');
   const [filter, setFilter] = useState<'all' | 'fresh' | 'stale' | 'rotten' | 'fossilized'>('all');
-  const [groqKey, setGroqKey] = useState<string>('');
-  const [showKeyInput, setShowKeyInput] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isRoasting, setIsRoasting] = useState<boolean>(false);
 
@@ -40,9 +37,6 @@ export function App() {
 
     const savedTabs = localStorage.getItem('tabrot_tabs');
     const savedGraveyard = localStorage.getItem('tabrot_graveyard');
-    const savedKey = localStorage.getItem('tabrot_groq_key');
-
-    if (savedKey) setGroqKey(savedKey);
 
     if (savedTabs) {
       try {
@@ -159,7 +153,7 @@ export function App() {
     const updated = await Promise.all(
       tabs.map(async (t) => {
         const ageHours = (Date.now() - t.lastInteractedAt) / (1000 * 60 * 60);
-        const roast = await fetchGroqRoast(t.title, t.url, ageHours, groqKey);
+        const roast = await fetchGroqRoast(t.title, t.url, ageHours);
         return { ...t, roast };
       })
     );
@@ -174,20 +168,12 @@ export function App() {
   });
 
   return (
-    <div className="min-h-screen bg-[#F4EFEA] text-[#1B2A26] p-4 sm:p-6 lg:p-10 font-mono selection:bg-[#3D5A45] selection:text-[#F4EFEA]">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="min-h-screen bg-[#F4EFEA] text-[#1B2A26] flex flex-col font-mono selection:bg-[#3D5A45] selection:text-[#F4EFEA]">
+      <div className="w-full max-w-6xl mx-auto p-4 sm:p-6 lg:p-10 flex-1 flex flex-col space-y-6">
         
         {/* HEADER BAR: Editorial Title & Controls */}
         <header className="border-b-2 border-[#1B2A26] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-[11px] font-semibold uppercase tracking-widest text-[#3D5A45] bg-[#3D5A45]/10 px-2 py-0.5 border border-[#3D5A45]/30">
-                FIELD SPECIMEN CATALOG • v1.0
-              </span>
-              <span className="text-[11px] text-[#5E6963]">
-                {tabs.length} SPECIMENS MONITORED
-              </span>
-            </div>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight uppercase flex items-center gap-2">
               TABROT <span className="text-lg font-normal text-[#5E6963] lowercase">/terrarium</span>
             </h1>
@@ -210,14 +196,6 @@ export function App() {
             </button>
 
             <button
-              onClick={() => setShowKeyInput(!showKeyInput)}
-              className="brutalist-btn px-2.5 py-1.5 text-xs flex items-center gap-1.5"
-            >
-              <Key className="w-4 h-4 text-[#BFA054]" />
-              GROQ AI {groqKey ? '✓' : 'KEY'}
-            </button>
-
-            <button
               onClick={handleResetToMock}
               title="Reset with 12 messy tabs"
               className="brutalist-btn px-2.5 py-1.5 text-xs flex items-center gap-1.5"
@@ -227,34 +205,6 @@ export function App() {
             </button>
           </div>
         </header>
-
-        {/* API KEY DRAWER */}
-        {showKeyInput && (
-          <div className="p-4 border border-[#1B2A26] bg-[#ECE6DF] flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-            <div className="text-xs">
-              <span className="font-bold">Groq API Key (Llama 3.3 70B / Qwen 27B):</span>
-              <p className="text-[#5E6963] text-[11px]">Key is pre-wired from your active session. You can enter an override here.</p>
-            </div>
-            <div className="flex gap-2 w-full sm:w-auto">
-              <input
-                type="password"
-                placeholder="gsk_..."
-                value={groqKey}
-                onChange={(e) => {
-                  setGroqKey(e.target.value);
-                  localStorage.setItem('tabrot_groq_key', e.target.value);
-                }}
-                className="px-2 py-1 text-xs border border-[#1B2A26] bg-[#F4EFEA] font-mono focus:outline-none w-full sm:w-64"
-              />
-              <button
-                onClick={() => setShowKeyInput(false)}
-                className="brutalist-btn px-3 py-1 text-xs"
-              >
-                DONE
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* STATS HUD: High-Density Monospace Dashboard */}
         <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -331,8 +281,10 @@ export function App() {
                 soundEngine.playClick();
                 setActiveTab('terrarium');
               }}
-              className={`brutalist-btn px-3 py-1.5 text-xs flex items-center gap-1.5 ${
-                activeTab === 'terrarium' ? 'bg-[#1B2A26] text-[#F4EFEA]' : ''
+              className={`brutalist-btn px-3 py-1.5 text-xs flex items-center gap-1.5 transition-colors ${
+                activeTab === 'terrarium'
+                  ? 'bg-[#1B2A26] text-[#F4EFEA] border-[#1B2A26]'
+                  : 'bg-[#F4EFEA] text-[#1B2A26] hover:bg-[#EAE5DE]'
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
@@ -343,8 +295,10 @@ export function App() {
                 soundEngine.playClick();
                 setActiveTab('graveyard');
               }}
-              className={`brutalist-btn px-3 py-1.5 text-xs flex items-center gap-1.5 ${
-                activeTab === 'graveyard' ? 'bg-[#1B2A26] text-[#F4EFEA]' : ''
+              className={`brutalist-btn px-3 py-1.5 text-xs flex items-center gap-1.5 transition-colors ${
+                activeTab === 'graveyard'
+                  ? 'bg-[#1B2A26] text-[#F4EFEA] border-[#1B2A26]'
+                  : 'bg-[#F4EFEA] text-[#1B2A26] hover:bg-[#EAE5DE]'
               }`}
             >
               <FolderArchive className="w-3.5 h-3.5" />
@@ -362,10 +316,10 @@ export function App() {
                     soundEngine.playClick();
                     setFilter(stage);
                   }}
-                  className={`text-[11px] font-mono uppercase px-2 py-0.5 border ${
+                  className={`text-[11px] font-mono uppercase px-2 py-0.5 border transition-colors ${
                     filter === stage
                       ? 'border-[#1B2A26] bg-[#1B2A26] text-[#F4EFEA]'
-                      : 'border-[#1B2A26]/30 hover:border-[#1B2A26]'
+                      : 'border-[#1B2A26]/30 bg-[#F4EFEA] text-[#1B2A26] hover:border-[#1B2A26]'
                   }`}
                 >
                   {stage}
@@ -385,37 +339,39 @@ export function App() {
         </div>
 
         {/* MAIN VIEW AREA */}
-        {activeTab === 'terrarium' ? (
-          <div>
-            {filteredTabs.length === 0 ? (
-              <div className="p-12 border border-dashed border-[#1B2A26]/40 text-center font-mono text-sm text-[#5E6963]">
-                NO SPECIMENS MATCHING FILTER "{filter.toUpperCase()}".
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {filteredTabs.map((tab) => (
-                  <SpecimenCard
-                    key={tab.id}
-                    tab={tab}
-                    onWater={handleWater}
-                    onCremate={handleCremate}
-                    onFocus={handleFocus}
-                    onTogglePin={handleTogglePin}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        ) : (
-          <Graveyard
-            graveyard={graveyard}
-            onRevive={handleRevive}
-            onClearGraveyard={() => setGraveyard([])}
-          />
-        )}
+        <main className="flex-1">
+          {activeTab === 'terrarium' ? (
+            <div>
+              {filteredTabs.length === 0 ? (
+                <div className="p-12 border border-dashed border-[#1B2A26]/40 text-center font-mono text-sm text-[#5E6963] bg-[#F8F5F0]">
+                  NO SPECIMENS MATCHING FILTER "{filter.toUpperCase()}".
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {filteredTabs.map((tab) => (
+                    <SpecimenCard
+                      key={tab.id}
+                      tab={tab}
+                      onWater={handleWater}
+                      onCremate={handleCremate}
+                      onFocus={handleFocus}
+                      onTogglePin={handleTogglePin}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : (
+            <Graveyard
+              graveyard={graveyard}
+              onRevive={handleRevive}
+              onClearGraveyard={() => setGraveyard([])}
+            />
+          )}
+        </main>
 
-        {/* FOOTER: Editorial Hackathon Attributions */}
-        <footer className="pt-6 border-t border-[#1B2A26]/20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#5E6963] gap-2">
+        {/* FOOTER: Fixed to bottom of viewport layout */}
+        <footer className="pt-6 border-t border-[#1B2A26]/20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#5E6963] gap-2 mt-auto">
           <div>
             IDEA LAB HACKS 2026 PROTOTYPE • BUILT BY ILYAN KHAN
           </div>
