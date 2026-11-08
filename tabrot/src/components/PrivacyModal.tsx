@@ -118,7 +118,7 @@ export const PrivacyModal: FC<PrivacyModalProps> = ({ isOpen, onClose, isFirstTi
         </div>
 
         {/* Modal Footer */}
-        <div className="p-3 bg-[#DDD5C7] border-t-2 border-[#1B2A26] flex items-center justify-between">
+        <div className="p-3 bg-[#DDD5C7] border-t-2 border-[#1B2A26] flex items-center justify-between shrink-0">
           <span className="text-[10px] text-[#536059]">
             {isFirstTime ? 'Please review & acknowledge to initialize TabRot' : 'Local-first architecture'}
           </span>
@@ -127,7 +127,8 @@ export const PrivacyModal: FC<PrivacyModalProps> = ({ isOpen, onClose, isFirstTi
               soundEngine.playClick();
               onClose();
             }}
-            className="brutalist-btn px-4 py-1.5 text-xs text-[#E6DFD5] bg-[#1B2A26] hover:bg-[#2A3F39]"
+            style={{ backgroundColor: '#1B2A26', color: '#E6DFD5' }}
+            className="px-4 py-2 text-xs font-bold font-mono tracking-wider uppercase border-2 border-[#1B2A26] shadow-[2px_2px_0px_#1B2A26] hover:bg-[#2A3F39] active:translate-x-0.5 active:translate-y-0.5 transition-all cursor-pointer"
           >
             {isFirstTime ? 'I UNDERSTAND & ENTER TERRARIUM' : 'ACKNOWLEDGE & CLOSE'}
           </button>
