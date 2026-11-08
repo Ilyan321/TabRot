@@ -32,7 +32,6 @@ export function App() {
   const [filter, setFilter] = useState<'all' | 'fresh' | 'stale' | 'rotten' | 'fossilized'>('all');
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isRoasting, setIsRoasting] = useState<boolean>(false);
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState<boolean>(false);
   const [isFirstLaunch, setIsFirstLaunch] = useState<boolean>(false);
 
@@ -49,25 +48,6 @@ export function App() {
     localStorage.setItem('tabrot_onboarding_ack', 'true');
     setIsPrivacyOpen(false);
     setIsFirstLaunch(false);
-  };
-
-  const refreshLiveTabs = async () => {
-    setIsRefreshing(true);
-    soundEngine.playClick();
-    const real = await fetchRealChromeTabs();
-    if (real && real.length > 0) {
-      setTabs(real);
-    }
-    // Also re-sync graveyard if updated in popup
-    const savedGraveyard = localStorage.getItem('tabrot_graveyard');
-    if (savedGraveyard) {
-      try {
-        setGraveyard(JSON.parse(savedGraveyard));
-      } catch {
-        // ignore
-      }
-    }
-    setTimeout(() => setIsRefreshing(false), 300);
   };
 
   // Initialize data from Chrome Extension or localStorage or mock specimens
@@ -124,6 +104,20 @@ export function App() {
       setTabs((prev) => prev.map((t) => calculateDecay(t)));
     }, 30000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Auto-sync when user switches back to TabRot window from other tabs
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === 'visible') {
+        const real = await fetchRealChromeTabs();
+        if (real && real.length > 0) {
+          setTabs(real);
+        }
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
   const stats = calculateTerrariumStats(tabs, graveyard);
@@ -248,15 +242,6 @@ export function App() {
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
-            <button
-              onClick={refreshLiveTabs}
-              title="Refresh open browser tabs"
-              className="brutalist-btn px-2.5 py-1.5 text-xs flex items-center gap-1.5"
-            >
-              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-              REFRESH TABS
-            </button>
-
             <button
               onClick={() => {
                 const muted = soundEngine.toggleMute();
