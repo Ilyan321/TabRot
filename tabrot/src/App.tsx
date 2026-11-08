@@ -319,11 +319,11 @@ export function App() {
                 soundEngine.playClick();
                 setActiveTab('terrarium');
               }}
-              className={`brutalist-btn px-3 py-1.5 text-xs flex items-center gap-1.5 transition-colors ${
-                activeTab === 'terrarium'
-                  ? 'bg-[#1B2A26] text-[#F4EFEA] border-[#1B2A26]'
-                  : 'bg-[#F4EFEA] text-[#1B2A26] hover:bg-[#EAE5DE]'
-              }`}
+              style={{
+                backgroundColor: activeTab === 'terrarium' ? '#1B2A26' : '#F4EFEA',
+                color: activeTab === 'terrarium' ? '#F4EFEA' : '#1B2A26',
+              }}
+              className="px-3 py-1.5 text-xs font-mono font-bold tracking-wider uppercase border border-[#1B2A26] shadow-[2px_2px_0px_#1B2A26] flex items-center gap-1.5 transition-all"
             >
               <Layers className="w-3.5 h-3.5" />
               LIVING TERRARIUM ({tabs.length})
@@ -333,11 +333,11 @@ export function App() {
                 soundEngine.playClick();
                 setActiveTab('graveyard');
               }}
-              className={`brutalist-btn px-3 py-1.5 text-xs flex items-center gap-1.5 transition-colors ${
-                activeTab === 'graveyard'
-                  ? 'bg-[#1B2A26] text-[#F4EFEA] border-[#1B2A26]'
-                  : 'bg-[#F4EFEA] text-[#1B2A26] hover:bg-[#EAE5DE]'
-              }`}
+              style={{
+                backgroundColor: activeTab === 'graveyard' ? '#1B2A26' : '#F4EFEA',
+                color: activeTab === 'graveyard' ? '#F4EFEA' : '#1B2A26',
+              }}
+              className="px-3 py-1.5 text-xs font-mono font-bold tracking-wider uppercase border border-[#1B2A26] shadow-[2px_2px_0px_#1B2A26] flex items-center gap-1.5 transition-all"
             >
               <FolderArchive className="w-3.5 h-3.5" />
               CEMETERY ARCHIVE ({graveyard.length})
