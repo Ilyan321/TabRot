@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { TabSpecimen, CrematedTab } from './types';
-import { fetchRealChromeTabs, closeRealChromeTab } from './engine/chromeTabs';
+import { fetchRealChromeTabs, closeRealChromeTab, focusRealChromeTab } from './engine/chromeTabs';
 import {
   getMockSpecimens,
   calculateDecay,
@@ -131,7 +131,7 @@ export function App() {
 
   const handleFocus = (tab: TabSpecimen) => {
     soundEngine.playClick();
-    window.open(tab.url, '_blank');
+    focusRealChromeTab(tab.id, tab.url);
   };
 
   const handleRevive = (tomb: CrematedTab) => {
@@ -173,10 +173,24 @@ export function App() {
     setIsRoasting(false);
   };
 
-  const filteredTabs = tabs.filter((t) => {
-    if (filter === 'all') return true;
-    return t.stage === filter;
-  });
+  const filteredTabs = tabs
+    .filter((t) => {
+      if (filter === 'all') return true;
+      return t.stage === filter;
+    })
+    .sort((a, b) => {
+      // 1. Pinned tabs always stay locked at the 1st position
+      if (a.pinned && !b.pinned) return -1;
+      if (!a.pinned && b.pinned) return 1;
+
+      // 2. Highest decay / rot first
+      if (b.rotScore !== a.rotScore) {
+        return b.rotScore - a.rotScore;
+      }
+
+      // 3. Oldest last interacted first
+      return a.lastInteractedAt - b.lastInteractedAt;
+    });
 
   return (
     <div className="min-h-screen text-[#1B2A26] flex flex-col font-mono selection:bg-[#2E4B37] selection:text-[#E6DFD5]">

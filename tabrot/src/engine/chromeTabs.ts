@@ -70,14 +70,27 @@ export const closeRealChromeTab = (id: string): void => {
   }
 };
 
-// Focus / Switch to a real tab in Google Chrome
-export const focusRealChromeTab = (id: string): void => {
-  if (!isChromeExtension()) return;
-  if (id.startsWith('chrome-')) {
+// Focus / Switch to a real tab in Google Chrome, bringing its window to front
+export const focusRealChromeTab = (id: string, fallbackUrl?: string): void => {
+  if (isChromeExtension() && id.startsWith('chrome-')) {
     const numericId = parseInt(id.replace('chrome-', ''), 10);
     if (!isNaN(numericId)) {
-      chrome.tabs.update(numericId, { active: true }).catch(() => {});
+      chrome.tabs.get(numericId, (tab) => {
+        if (chrome.runtime.lastError || !tab) {
+          if (fallbackUrl) window.open(fallbackUrl, '_blank');
+          return;
+        }
+        chrome.tabs.update(numericId, { active: true });
+        if (tab.windowId) {
+          chrome.windows.update(tab.windowId, { focused: true });
+        }
+      });
+      return;
     }
+  }
+
+  if (fallbackUrl) {
+    window.open(fallbackUrl, '_blank');
   }
 };
 
