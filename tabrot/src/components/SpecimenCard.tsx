@@ -143,7 +143,7 @@ export const SpecimenCard: React.FC<SpecimenCardProps> = ({
 
         {/* Roast Callout (If exists or for decaying tabs) */}
         {tab.roast && (
-          <div className="p-2 mb-3 bg-[#EFE9E2] border-l-2 border-[#1B2A26] text-[11px] font-mono text-[#1B2A26] italic">
+          <div className="p-2.5 mb-3 bg-[#D4CBBC] border-l-2 border-[#1B2A26] text-[11px] font-mono text-[#1B2A26] italic shadow-[1px_1px_0px_#1B2A26]">
             "{tab.roast}"
           </div>
         )}
@@ -156,9 +156,9 @@ export const SpecimenCard: React.FC<SpecimenCardProps> = ({
             soundEngine.playWater();
             onWater(tab.id);
           }}
-          className="brutalist-btn py-1 px-2 text-[11px] flex items-center justify-center gap-1.5 hover:bg-[#3D5A45]/15 text-[#1B2A26]"
+          className="brutalist-btn py-1 px-2 text-[11px] flex items-center justify-center gap-1.5 hover:bg-[#2E4B37]/15 text-[#1B2A26]"
         >
-          <Droplet className="w-3 h-3 text-[#3D5A45]" />
+          <Droplet className="w-3 h-3 text-[#2E4B37]" />
           WATER (CPR)
         </button>
 
@@ -167,9 +167,9 @@ export const SpecimenCard: React.FC<SpecimenCardProps> = ({
             soundEngine.playCremate();
             onCremate(tab.id);
           }}
-          className="brutalist-btn py-1 px-2 text-[11px] flex items-center justify-center gap-1.5 bg-[#C84B31]/10 hover:bg-[#C84B31]/25 text-[#C84B31] border-[#C84B31]"
+          className="brutalist-btn py-1 px-2 text-[11px] flex items-center justify-center gap-1.5 bg-[#B53F28]/15 hover:bg-[#B53F28]/30 text-[#B53F28] border-[#B53F28]"
         >
-          <Flame className="w-3 h-3 text-[#C84B31]" />
+          <Flame className="w-3 h-3 text-[#B53F28]" />
           CREMATE
         </button>
       </div>

@@ -2,13 +2,15 @@
 
 @layer base {
   :root {
-    --bg-paper: #F4EFEA;
-    --ink-dark: #1B2A26;
-    --ink-muted: #5E6963;
-    --moss-green: #3D5A45;
-    --ochre-stale: #BFA054;
-    --rust-rot: #C84B31;
-    --stone-fossil: #7A7571;
+    --bg-paper: #E6DFD5;       /* Warm vintage specimen parchment (rich, not white) */
+    --card-surface: #DDD5C7;   /* Slightly deeper specimen folder layer */
+    --card-inner: #D4CBBC;     /* Recessed well for roasts & meters */
+    --ink-dark: #1B2A26;       /* Deep Lichen Ink */
+    --ink-muted: #536059;      /* Faded field guide notes */
+    --moss-green: #2E4B37;     /* Organic fresh moss */
+    --ochre-stale: #A67C2E;    /* Dried aged paper ochre */
+    --rust-rot: #B53F28;       /* Terracotta / Rust rot */
+    --stone-fossil: #6B6560;   /* Ancient specimen fossil slate */
   }
 
   body {
@@ -16,27 +18,30 @@
     color: var(--ink-dark);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(#1B2A26 0.75px, transparent 0.75px);
+    background-size: 24px 24px;
+    background-position: 0 0;
   }
 }
 
 /* Crisp 1px tactile borders & paper aesthetic */
 .specimen-card {
-  border: 1px solid #1B2A26;
-  background-color: #F8F5F0;
-  box-shadow: 2px 2px 0px #1B2A26;
+  border: 1.5px solid #1B2A26;
+  background-color: #DDD5C7;
+  box-shadow: 3px 3px 0px #1B2A26;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .specimen-card:hover {
   transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px #1B2A26;
+  box-shadow: 4px 4px 0px #1B2A26;
 }
 
 .brutalist-btn {
-  border: 1px solid #1B2A26;
-  background-color: #F4EFEA;
+  border: 1.5px solid #1B2A26;
+  background-color: #E6DFD5;
   box-shadow: 2px 2px 0px #1B2A26;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   transition: all 0.08s ease;
@@ -45,6 +50,7 @@
 .brutalist-btn:hover {
   transform: translate(-1px, -1px);
   box-shadow: 3px 3px 0px #1B2A26;
+  background-color: #DDD5C7;
 }
 
 .brutalist-btn:active {

@@ -167,16 +167,16 @@ export function App() {
   });
 
   return (
-    <div className="min-h-screen bg-[#F4EFEA] text-[#1B2A26] flex flex-col font-mono selection:bg-[#3D5A45] selection:text-[#F4EFEA]">
+    <div className="min-h-screen text-[#1B2A26] flex flex-col font-mono selection:bg-[#2E4B37] selection:text-[#E6DFD5]">
       <div className="w-full max-w-6xl mx-auto p-4 sm:p-6 lg:p-10 flex-1 flex flex-col space-y-6">
         
         {/* HEADER BAR: Editorial Title & Controls */}
         <header className="border-b-2 border-[#1B2A26] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight uppercase flex items-center gap-2">
-              TABROT <span className="text-lg font-normal text-[#5E6963] lowercase">/terrarium</span>
+              TABROT <span className="text-lg font-normal text-[#536059] lowercase">/terrarium</span>
             </h1>
-            <p className="text-xs text-[#5E6963] mt-1 max-w-xl">
+            <p className="text-xs text-[#536059] mt-1 max-w-xl font-medium">
               An interactive digital terrarium where neglected browser tabs visibly decay, accumulate biological debt, and face sarcastic judgement.
             </p>
           </div>
@@ -190,7 +190,7 @@ export function App() {
               title={isMuted ? 'Unmute Audio Context' : 'Mute Sound Effects'}
               className="brutalist-btn px-2.5 py-1.5 text-xs flex items-center gap-1.5"
             >
-              {isMuted ? <VolumeX className="w-4 h-4 text-[#C84B31]" /> : <Volume2 className="w-4 h-4 text-[#3D5A45]" />}
+              {isMuted ? <VolumeX className="w-4 h-4 text-[#B53F28]" /> : <Volume2 className="w-4 h-4 text-[#2E4B37]" />}
               {isMuted ? 'MUTED' : 'AUDIO ON'}
             </button>
 
@@ -206,14 +206,14 @@ export function App() {
         </header>
 
         {/* ECOSYSTEM DIAGNOSTICS: Precision Neobrutalist Field Notebook HUD */}
-        <section className="border-2 border-[#1B2A26] bg-[#F4EFEA] p-5 shadow-[4px_4px_0px_#1B2A26] space-y-4">
+        <section className="border-2 border-[#1B2A26] bg-[#DDD5C7] p-5 shadow-[4px_4px_0px_#1B2A26] space-y-4">
           {/* Header */}
           <div className="flex items-center justify-between pb-3 border-b border-[#1B2A26]">
             <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-[#1B2A26]">
               <Layers className="w-4 h-4 text-[#1B2A26]" />
               ECOSYSTEM DIAGNOSTICS
             </div>
-            <span className="px-2 py-0.5 text-[10px] font-mono font-bold tracking-widest text-[#F4EFEA] bg-[#1B2A26] uppercase">
+            <span className="px-2 py-0.5 text-[10px] font-mono font-bold tracking-widest text-[#E6DFD5] bg-[#1B2A26] uppercase">
               LIVE
             </span>
           </div>
@@ -224,9 +224,9 @@ export function App() {
               <span>AVERAGE ECOSYSTEM ROT</span>
               <span>{stats.overallRotPercentage}%</span>
             </div>
-            <div className="w-full h-3 border border-[#1B2A26] bg-[#EAE5DE] p-0.5">
+            <div className="w-full h-3 border border-[#1B2A26] bg-[#C9BFB0] p-0.5">
               <div
-                className="h-full bg-[#BFA054] transition-all duration-300"
+                className="h-full bg-[#A67C2E] transition-all duration-300"
                 style={{ width: `${stats.overallRotPercentage}%` }}
               />
             </div>
@@ -234,34 +234,34 @@ export function App() {
 
           {/* Two Metric Boxes: Active RAM & Freed RAM */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="border border-[#1B2A26] bg-[#F4EFEA] p-3 shadow-[2px_2px_0px_#1B2A26]">
-              <div className="flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase text-[#5E6963] mb-1">
-                <span className="text-[#C84B31]">⚙</span> ACTIVE RAM USAGE
+            <div className="border border-[#1B2A26] bg-[#E6DFD5] p-3 shadow-[2px_2px_0px_#1B2A26]">
+              <div className="flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase text-[#536059] mb-1">
+                <span className="text-[#B53F28]">⚙</span> ACTIVE RAM USAGE
               </div>
               <div className="text-2xl font-black font-mono text-[#1B2A26]">
-                {stats.totalRamUsedMb} <span className="text-xs font-normal text-[#5E6963]">MB</span>
+                {stats.totalRamUsedMb} <span className="text-xs font-normal text-[#536059]">MB</span>
               </div>
             </div>
 
-            <div className="border border-[#1B2A26] bg-[#F4EFEA] p-3 shadow-[2px_2px_0px_#1B2A26]">
-              <div className="flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase text-[#5E6963] mb-1">
-                <span className="text-[#3D5A45]">🗄</span> FREED RAM (GRAVEYARD)
+            <div className="border border-[#1B2A26] bg-[#E6DFD5] p-3 shadow-[2px_2px_0px_#1B2A26]">
+              <div className="flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase text-[#536059] mb-1">
+                <span className="text-[#2E4B37]">🗄</span> FREED RAM (GRAVEYARD)
               </div>
               <div className="text-2xl font-black font-mono text-[#1B2A26]">
-                {stats.totalRamFreedMb} <span className="text-xs font-normal text-[#5E6963]">MB</span>
+                {stats.totalRamFreedMb} <span className="text-xs font-normal text-[#536059]">MB</span>
               </div>
             </div>
           </div>
 
           {/* Stage Distribution List */}
-          <div className="border border-[#1B2A26] bg-[#F4EFEA] p-4 shadow-[2px_2px_0px_#1B2A26] space-y-2">
-            <div className="text-[11px] font-mono font-bold uppercase text-[#5E6963] mb-2 tracking-wide">
+          <div className="border border-[#1B2A26] bg-[#E6DFD5] p-4 shadow-[2px_2px_0px_#1B2A26] space-y-2">
+            <div className="text-[11px] font-mono font-bold uppercase text-[#536059] mb-2 tracking-wide">
               STAGE DISTRIBUTION
             </div>
             
             <div className="flex justify-between items-center text-xs font-mono font-bold text-[#1B2A26]">
               <span className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 bg-[#3D5A45] inline-block"></span>
+                <span className="w-2.5 h-2.5 bg-[#2E4B37] inline-block"></span>
                 FRESH (&lt;4h)
               </span>
               <span>{stats.freshCount}</span>
@@ -269,7 +269,7 @@ export function App() {
 
             <div className="flex justify-between items-center text-xs font-mono font-bold text-[#1B2A26]">
               <span className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 bg-[#BFA054] inline-block"></span>
+                <span className="w-2.5 h-2.5 bg-[#A67C2E] inline-block"></span>
                 STALE (4-24h)
               </span>
               <span>{stats.staleCount}</span>
@@ -277,7 +277,7 @@ export function App() {
 
             <div className="flex justify-between items-center text-xs font-mono font-bold text-[#1B2A26]">
               <span className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 bg-[#C84B31] inline-block"></span>
+                <span className="w-2.5 h-2.5 bg-[#B53F28] inline-block"></span>
                 ROTTEN (24-72h)
               </span>
               <span>{stats.rottenCount}</span>
@@ -285,7 +285,7 @@ export function App() {
 
             <div className="flex justify-between items-center text-xs font-mono font-bold text-[#1B2A26]">
               <span className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 bg-[#7A7571] inline-block"></span>
+                <span className="w-2.5 h-2.5 bg-[#6B6560] inline-block"></span>
                 FOSSILIZED (&gt;72h)
               </span>
               <span>{stats.fossilizedCount}</span>
@@ -296,16 +296,16 @@ export function App() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
             <button
               onClick={handleWaterAll}
-              className="py-2.5 px-4 bg-[#F4EFEA] text-[#1B2A26] border-2 border-[#1B2A26] shadow-[3px_3px_0px_#1B2A26] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_#1B2A26] font-mono text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2 hover:bg-[#EAE5DE] transition-colors"
+              className="py-2.5 px-4 bg-[#E6DFD5] text-[#1B2A26] border-2 border-[#1B2A26] shadow-[3px_3px_0px_#1B2A26] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_#1B2A26] font-mono text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2 hover:bg-[#D4CBBC] transition-colors"
             >
-              <span className="text-[#3D5A45]">💧</span>
+              <span className="text-[#2E4B37]">💧</span>
               WATER ALL TABS
             </button>
             <button
               onClick={handleCremateRotten}
-              className="py-2.5 px-4 bg-[#C84B31] text-[#F4EFEA] border-2 border-[#1B2A26] shadow-[3px_3px_0px_#1B2A26] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_#1B2A26] font-mono text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2 hover:bg-[#B33E26] transition-colors"
+              className="py-2.5 px-4 bg-[#B53F28] text-[#E6DFD5] border-2 border-[#1B2A26] shadow-[3px_3px_0px_#1B2A26] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_#1B2A26] font-mono text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2 hover:bg-[#9E3520] transition-colors"
             >
-              <Flame className="w-4 h-4 text-[#F4EFEA]" />
+              <Flame className="w-4 h-4 text-[#E6DFD5]" />
               MASS CREMATE ROTTEN ({stats.rottenCount + stats.fossilizedCount})
             </button>
           </div>
@@ -320,10 +320,10 @@ export function App() {
                 setActiveTab('terrarium');
               }}
               style={{
-                backgroundColor: activeTab === 'terrarium' ? '#1B2A26' : '#F4EFEA',
-                color: activeTab === 'terrarium' ? '#F4EFEA' : '#1B2A26',
+                backgroundColor: activeTab === 'terrarium' ? '#1B2A26' : '#DDD5C7',
+                color: activeTab === 'terrarium' ? '#E6DFD5' : '#1B2A26',
               }}
-              className="px-3 py-1.5 text-xs font-mono font-bold tracking-wider uppercase border border-[#1B2A26] shadow-[2px_2px_0px_#1B2A26] flex items-center gap-1.5 transition-all"
+              className="px-3 py-1.5 text-xs font-mono font-bold tracking-wider uppercase border border-[#1B2A26] shadow-[2px_2px_0px_#1B2A26] flex items-center gap-1.5 transition-all hover:bg-[#C9BFB0]"
             >
               <Layers className="w-3.5 h-3.5" />
               LIVING TERRARIUM ({tabs.length})
@@ -334,10 +334,10 @@ export function App() {
                 setActiveTab('graveyard');
               }}
               style={{
-                backgroundColor: activeTab === 'graveyard' ? '#1B2A26' : '#F4EFEA',
-                color: activeTab === 'graveyard' ? '#F4EFEA' : '#1B2A26',
+                backgroundColor: activeTab === 'graveyard' ? '#1B2A26' : '#DDD5C7',
+                color: activeTab === 'graveyard' ? '#E6DFD5' : '#1B2A26',
               }}
-              className="px-3 py-1.5 text-xs font-mono font-bold tracking-wider uppercase border border-[#1B2A26] shadow-[2px_2px_0px_#1B2A26] flex items-center gap-1.5 transition-all"
+              className="px-3 py-1.5 text-xs font-mono font-bold tracking-wider uppercase border border-[#1B2A26] shadow-[2px_2px_0px_#1B2A26] flex items-center gap-1.5 transition-all hover:bg-[#C9BFB0]"
             >
               <FolderArchive className="w-3.5 h-3.5" />
               CEMETERY ARCHIVE ({graveyard.length})
@@ -346,7 +346,7 @@ export function App() {
 
           {activeTab === 'terrarium' && (
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[10px] text-[#5E6963] uppercase">FILTER:</span>
+              <span className="text-[10px] text-[#536059] uppercase font-bold">FILTER:</span>
               {(['all', 'fresh', 'stale', 'rotten', 'fossilized'] as const).map((stage) => (
                 <button
                   key={stage}
@@ -354,10 +354,10 @@ export function App() {
                     soundEngine.playClick();
                     setFilter(stage);
                   }}
-                  className={`text-[11px] font-mono uppercase px-2 py-0.5 border transition-colors ${
+                  className={`text-[11px] font-mono uppercase px-2 py-0.5 border font-semibold transition-colors ${
                     filter === stage
-                      ? 'border-[#1B2A26] bg-[#1B2A26] text-[#F4EFEA]'
-                      : 'border-[#1B2A26]/30 bg-[#F4EFEA] text-[#1B2A26] hover:border-[#1B2A26]'
+                      ? 'border-[#1B2A26] bg-[#1B2A26] text-[#E6DFD5]'
+                      : 'border-[#1B2A26]/40 bg-[#DDD5C7] text-[#1B2A26] hover:border-[#1B2A26]'
                   }`}
                 >
                   {stage}
@@ -367,7 +367,7 @@ export function App() {
               <button
                 onClick={handleGenerateRoasts}
                 disabled={isRoasting}
-                className="brutalist-btn px-2.5 py-1 text-xs flex items-center gap-1 text-[#3D5A45] ml-2"
+                className="brutalist-btn px-2.5 py-1 text-xs flex items-center gap-1 text-[#2E4B37] ml-2"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 {isRoasting ? 'ROASTING...' : 'AI DIAGNOSE'}
