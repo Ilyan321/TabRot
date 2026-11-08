@@ -7,6 +7,7 @@ import {
   waterTab,
   cremateTab,
   calculateTerrariumStats,
+  calculateRamEstimate,
 } from './engine/decayEngine';
 import { soundEngine } from './engine/soundEngine';
 import { fetchGroqRoast } from './engine/roastEngine';
@@ -29,6 +30,26 @@ export function App() {
   const [filter, setFilter] = useState<'all' | 'fresh' | 'stale' | 'rotten' | 'fossilized'>('all');
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isRoasting, setIsRoasting] = useState<boolean>(false);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+
+  const refreshLiveTabs = async () => {
+    setIsRefreshing(true);
+    soundEngine.playClick();
+    const real = await fetchRealChromeTabs();
+    if (real && real.length > 0) {
+      setTabs(real);
+    }
+    // Also re-sync graveyard if updated in popup
+    const savedGraveyard = localStorage.getItem('tabrot_graveyard');
+    if (savedGraveyard) {
+      try {
+        setGraveyard(JSON.parse(savedGraveyard));
+      } catch {
+        // ignore
+      }
+    }
+    setTimeout(() => setIsRefreshing(false), 300);
+  };
 
   // Initialize data from Chrome Extension or localStorage or mock specimens
   useEffect(() => {
@@ -143,7 +164,7 @@ export function App() {
       lastInteractedAt: Date.now(),
       stage: 'fresh',
       rotScore: 0,
-      ramEstimateMb: 95,
+      ramEstimateMb: calculateRamEstimate(tomb.url, tomb.title),
       pinned: false,
     };
     setTabs((prev) => [revived, ...prev]);
@@ -208,6 +229,15 @@ export function App() {
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={refreshLiveTabs}
+              title="Refresh open browser tabs"
+              className="brutalist-btn px-2.5 py-1.5 text-xs flex items-center gap-1.5"
+            >
+              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+              REFRESH TABS
+            </button>
+
             <button
               onClick={() => {
                 const muted = soundEngine.toggleMute();

@@ -1,7 +1,7 @@
-import React from 'react';
+import type { FC } from 'react';
 import type { TabSpecimen } from '../types';
 import { soundEngine } from '../engine/soundEngine';
-import { Droplet, Flame, Pin, ExternalLink, Skull } from 'lucide-react';
+import { Droplet, Flame, Pin, ExternalLink, Skull, Clock } from 'lucide-react';
 
 interface SpecimenCardProps {
   tab: TabSpecimen;
@@ -11,7 +11,19 @@ interface SpecimenCardProps {
   onTogglePin: (id: string) => void;
 }
 
-export const SpecimenCard: React.FC<SpecimenCardProps> = ({
+function formatAge(lastInteractedAt: number): string {
+  const diffMs = Math.max(0, Date.now() - lastInteractedAt);
+  const diffMins = Math.floor(diffMs / (60 * 1000));
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffDays > 0) return `${diffDays}d ${diffHours % 24}h idle`;
+  if (diffHours > 0) return `${diffHours}h ${diffMins % 60}m idle`;
+  if (diffMins > 0) return `${diffMins}m idle`;
+  return '<1m idle';
+}
+
+export const SpecimenCard: FC<SpecimenCardProps> = ({
   tab,
   onWater,
   onCremate,
@@ -135,10 +147,15 @@ export const SpecimenCard: React.FC<SpecimenCardProps> = ({
           </a>
         </div>
 
-        {/* Rot Progress Meter */}
-        <div className="flex items-center justify-between font-mono text-[11px] text-[#5E6963] mb-3">
+        {/* Rot Progress Meter & Age */}
+        <div className="flex items-center justify-between font-mono text-[11px] text-[#5E6963] mb-2">
           <span>DECAY: [{meterBlocks}]</span>
           <span className="font-semibold text-[#1B2A26]">{tab.rotScore}%</span>
+        </div>
+
+        <div className="flex items-center gap-1.5 text-[10px] text-[#536059] font-mono mb-3">
+          <Clock className="w-3 h-3 text-[#A67C2E]" />
+          <span>{formatAge(tab.lastInteractedAt)}</span>
         </div>
 
         {/* Roast Callout (If exists or for decaying tabs) */}

@@ -6,33 +6,40 @@ import {
   openFullDashboard,
   focusRealChromeTab,
 } from '../engine/chromeTabs';
-import { getMockSpecimens, calculateTerrariumStats, waterTab, cremateTab } from '../engine/decayEngine';
+import { getMockSpecimens, calculateTerrariumStats, waterTab, cremateTab, calculateDecay } from '../engine/decayEngine';
 import { soundEngine } from '../engine/soundEngine';
-import { Layers, Flame, Droplet, ExternalLink, Maximize2 } from 'lucide-react';
+import { Layers, Flame, Droplet, ExternalLink, Maximize2, RefreshCw } from 'lucide-react';
 
 export function Popup() {
   const [tabs, setTabs] = useState<TabSpecimen[]>([]);
 
-  useEffect(() => {
-    soundEngine.unlockAudio();
-    const loadTabs = async () => {
-      const real = await fetchRealChromeTabs();
-      if (real && real.length > 0) {
-        setTabs(real);
-      } else {
-        const saved = localStorage.getItem('tabrot_tabs');
-        if (saved) {
-          try {
-            setTabs(JSON.parse(saved));
-          } catch {
-            setTabs(getMockSpecimens());
-          }
-        } else {
+  const loadTabs = async () => {
+    const real = await fetchRealChromeTabs();
+    if (real && real.length > 0) {
+      setTabs(real);
+    } else {
+      const saved = localStorage.getItem('tabrot_tabs');
+      if (saved) {
+        try {
+          setTabs(JSON.parse(saved));
+        } catch {
           setTabs(getMockSpecimens());
         }
+      } else {
+        setTabs(getMockSpecimens());
       }
-    };
+    }
+  };
+
+  useEffect(() => {
+    soundEngine.unlockAudio();
     loadTabs();
+
+    // Auto-tick decay every 20s while popup is open
+    const interval = setInterval(() => {
+      setTabs((prev) => prev.map((t) => calculateDecay(t)));
+    }, 20000);
+    return () => clearInterval(interval);
   }, []);
 
   const stats = calculateTerrariumStats(tabs, []);
@@ -82,17 +89,29 @@ export function Popup() {
           <Layers className="w-4 h-4 text-[#1B2A26]" />
           <span className="text-xs font-black tracking-wider uppercase">TABROT HUD</span>
         </div>
-        <button
-          onClick={() => {
-            soundEngine.playClick();
-            openFullDashboard();
-          }}
-          className="text-[10px] font-bold text-[#1B2A26] flex items-center gap-1 hover:underline uppercase bg-[#DDD5C7] px-2 py-0.5 border border-[#1B2A26]"
-          title="Open Full Terrarium"
-        >
-          <Maximize2 className="w-3 h-3" />
-          FULL EXPAND
-        </button>
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => {
+              soundEngine.playClick();
+              loadTabs();
+            }}
+            className="p-1 border border-[#1B2A26] bg-[#DDD5C7] hover:bg-[#C9BFB0] text-[#1B2A26]"
+            title="Refresh open tabs"
+          >
+            <RefreshCw className="w-3 h-3" />
+          </button>
+          <button
+            onClick={() => {
+              soundEngine.playClick();
+              openFullDashboard();
+            }}
+            className="text-[10px] font-bold text-[#1B2A26] flex items-center gap-1 hover:underline uppercase bg-[#DDD5C7] px-2 py-0.5 border border-[#1B2A26]"
+            title="Open Full Terrarium"
+          >
+            <Maximize2 className="w-3 h-3" />
+            EXPAND
+          </button>
+        </div>
       </div>
 
       {/* Mini Ecosystem Rot HUD */}
@@ -166,7 +185,7 @@ export function Popup() {
                   <Flame className="w-3 h-3" />
                 </button>
                 <button
-                  onClick={() => focusRealChromeTab(tab.id)}
+                  onClick={() => focusRealChromeTab(tab.id, tab.url)}
                   title="Focus tab"
                   className="p-1 border border-[#1B2A26] bg-[#E6DFD5] hover:bg-[#1B2A26]/10 text-[#1B2A26]"
                 >

@@ -51,7 +51,15 @@ export const fetchRealChromeTabs = async (): Promise<TabSpecimen[] | null> => {
       const savedMetadata: Record<string, { createdAt: number; lastInteractedAt: number; pinned: boolean }> =
         savedMetadataStr ? JSON.parse(savedMetadataStr) : {};
 
-      const validTabs = realTabs.filter((t) => t.id && t.url && !t.url.startsWith('chrome://'));
+      const validTabs = realTabs.filter(
+        (t) =>
+          t.id &&
+          t.url &&
+          !t.url.startsWith('chrome://') &&
+          !t.url.startsWith('chrome-extension://') &&
+          !t.url.startsWith('edge://') &&
+          !t.url.startsWith('about:')
+      );
 
       // Concurrently query live memory for each tab
       const memoryPromises = validTabs.map(async (t) => {

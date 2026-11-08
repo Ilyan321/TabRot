@@ -1,32 +1,66 @@
-# React + TypeScript + Vite
+# TabRot 🪴🪦
+### *The Digital Tab Terrarium & Graveyard*
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+> **"A living digital terrarium where neglected tabs rot in real time, beg for CPR, or get cremated into a searchable graveyard."**
 
-Currently, two official plugins are available:
+Built for **IdeaLab Hacks 2026** by **Ilyan Khan**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🌿 The Concept
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Every knowledge worker suffers from tab hoarding. You open a 3-hour tutorial video, save an academic paper, or leave an abandoned shopping cart open "just in case" — and then they sit for 4 days silently consuming gigabytes of system memory.
 
-## Expanding the Oxlint configuration
+**TabRot transforms this cognitive clutter into a living, tactile editorial terrarium:**
+- Neglected tabs experience biological decay through four stages: **Fresh** (0–4h) 🌱 → **Stale** (4–24h) 🍂 → **Rotten** (24–72h) 🍄 → **Fossilized** (>72h) 🪨.
+- If you still need a tab, click **Water (CPR)** to revive it and reset its decay counter.
+- If you're ready to let go, click **Cremate** — it physically closes the tab in Google Chrome and archives it with an epitaph in your searchable **Cemetery Archive**.
+- **AI Diagnostics:** Powered by Groq LLM API (`qwen/qwen3.8-27b`) for sardonic, dry roasts of your hoarding habits.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+---
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+## ✨ Features
+
+- 🔬 **Real Chrome Extension (MV3):** Injects runtime heap metrics via `chrome.scripting` to monitor actual open tabs and closes tabs via `chrome.tabs.remove`.
+- 📊 **Ecosystem Diagnostics HUD:** Real-time rot score meter, estimated RAM consumption breakdown, and stage distribution counters.
+- 🪦 **Cemetery Archive:** Searchable digital graveyard tracking total RAM freed, cause of death, time of death, and revival options.
+- 🔊 **Zero-Asset Procedural Audio:** All clicks, water drops, cremation crackles, and roasts synthesized live via the native **Web Audio API** (zero external MP3 files).
+- 📜 **Anti-Slop Editorial Design:** Warm vintage parchment palette (`#E6DFD5`), Lichen Ink typography, 1.5px tactile borders, and discrete ASCII decay progress bars.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** React 19 + TypeScript + Vite
+- **Styling:** Tailwind CSS v4 (Editorial Specimen Theme)
+- **Extension:** Chrome Manifest V3 (`tabs`, `scripting`, `storage`)
+- **AI Engine:** Groq API (`qwen/qwen3.8-27b` + deterministic offline hash fallback)
+- **Audio:** Custom Web Audio API Oscillator Synth Engine
+
+---
+
+## 🚀 Quickstart & Installation
+
+### 1. Web Simulator Mode
+```bash
+git clone https://github.com/Ilyan321/TabRot.git
+cd TabRot/tabrot
+npm install
+npm run dev
 ```
+Open `http://localhost:5173/` in your browser.
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### 2. Loading as Google Chrome Extension
+1. Run the build:
+```bash
+npm run build
+```
+2. Open Google Chrome and navigate to `chrome://extensions`.
+3. Toggle on **Developer mode** in the top-right corner.
+4. Click **Load unpacked** and select the `/tabrot/dist` folder.
+5. Pin **TabRot** to your browser toolbar!
+
+---
+
+## 📜 License
+MIT License • Built for IdeaLab Hacks 2026.
