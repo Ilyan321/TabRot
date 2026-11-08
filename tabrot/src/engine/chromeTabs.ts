@@ -36,7 +36,7 @@ export const fetchRealChromeTabs = async (): Promise<TabSpecimen[] | null> => {
             lastInteractedAt,
             stage: 'fresh',
             rotScore: 0,
-            ramEstimateMb: calculateRamEstimate(t.url || ''),
+            ramEstimateMb: calculateRamEstimate(t.url || '', t.title || ''),
             pinned: Boolean(t.pinned || existing?.pinned),
           };
 
