@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { TabSpecimen, CrematedTab } from './types';
+import { fetchRealChromeTabs, closeRealChromeTab } from './engine/chromeTabs';
 import {
   getMockSpecimens,
   calculateDecay,
@@ -29,25 +30,34 @@ export function App() {
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isRoasting, setIsRoasting] = useState<boolean>(false);
 
-  // Initialize data from localStorage or mock specimens
+  // Initialize data from Chrome Extension or localStorage or mock specimens
   useEffect(() => {
     soundEngine.unlockAudio();
     setIsMuted(soundEngine.getMuted());
 
-    const savedTabs = localStorage.getItem('tabrot_tabs');
-    const savedGraveyard = localStorage.getItem('tabrot_graveyard');
+    const initTabs = async () => {
+      const real = await fetchRealChromeTabs();
+      if (real && real.length > 0) {
+        setTabs(real);
+        return;
+      }
 
-    if (savedTabs) {
-      try {
-        const parsed = JSON.parse(savedTabs);
-        setTabs(parsed.map((t: TabSpecimen) => calculateDecay(t)));
-      } catch {
+      const savedTabs = localStorage.getItem('tabrot_tabs');
+      if (savedTabs) {
+        try {
+          const parsed = JSON.parse(savedTabs);
+          setTabs(parsed.map((t: TabSpecimen) => calculateDecay(t)));
+        } catch {
+          setTabs(getMockSpecimens());
+        }
+      } else {
         setTabs(getMockSpecimens());
       }
-    } else {
-      setTabs(getMockSpecimens());
-    }
+    };
 
+    initTabs();
+
+    const savedGraveyard = localStorage.getItem('tabrot_graveyard');
     if (savedGraveyard) {
       try {
         setGraveyard(JSON.parse(savedGraveyard));
@@ -93,6 +103,7 @@ export function App() {
     const target = tabs.find((t) => t.id === id);
     if (!target) return;
 
+    closeRealChromeTab(id);
     const dead = cremateTab(target, target.roast || '');
     setGraveyard((prev) => [dead, ...prev]);
     setTabs((prev) => prev.filter((t) => t.id !== id));
@@ -103,6 +114,7 @@ export function App() {
     const rottenOnes = tabs.filter(
       (t) => (t.stage === 'rotten' || t.stage === 'fossilized') && !t.pinned
     );
+    rottenOnes.forEach((t) => closeRealChromeTab(t.id));
     const newGraves = rottenOnes.map((t) => cremateTab(t, t.roast || ''));
 
     setGraveyard((prev) => [...newGraves, ...prev]);
