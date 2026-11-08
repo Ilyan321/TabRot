@@ -205,26 +205,26 @@ export function App() {
           </div>
         </header>
 
-        {/* ECOSYSTEM DIAGNOSTICS: Precision Neobrutalist Field Notebook HUD */}
-        <section className="border-2 border-[#1B2A26] bg-[#DDD5C7] p-5 shadow-[4px_4px_0px_#1B2A26] space-y-4">
+        {/* ECOSYSTEM DIAGNOSTICS: Compact Precision Field Notebook HUD */}
+        <section className="border-2 border-[#1B2A26] bg-[#DDD5C7] p-3.5 sm:p-4 shadow-[3px_3px_0px_#1B2A26] space-y-2.5">
           {/* Header */}
-          <div className="flex items-center justify-between pb-3 border-b border-[#1B2A26]">
-            <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-[#1B2A26]">
-              <Layers className="w-4 h-4 text-[#1B2A26]" />
+          <div className="flex items-center justify-between pb-2 border-b border-[#1B2A26]">
+            <div className="flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-[#1B2A26]">
+              <Layers className="w-3.5 h-3.5 text-[#1B2A26]" />
               ECOSYSTEM DIAGNOSTICS
             </div>
-            <span className="px-2 py-0.5 text-[10px] font-mono font-bold tracking-widest text-[#E6DFD5] bg-[#1B2A26] uppercase">
+            <span className="px-1.5 py-0.5 text-[9px] font-mono font-bold tracking-widest text-[#E6DFD5] bg-[#1B2A26] uppercase">
               LIVE
             </span>
           </div>
 
           {/* Average Ecosystem Rot Bar */}
           <div>
-            <div className="flex justify-between items-center text-xs font-mono font-bold uppercase mb-1.5 text-[#1B2A26]">
+            <div className="flex justify-between items-center text-[10px] font-mono font-bold uppercase mb-1 text-[#1B2A26]">
               <span>AVERAGE ECOSYSTEM ROT</span>
               <span>{stats.overallRotPercentage}%</span>
             </div>
-            <div className="w-full h-3 border border-[#1B2A26] bg-[#C9BFB0] p-0.5">
+            <div className="w-full h-2 border border-[#1B2A26] bg-[#C9BFB0] p-[1px]">
               <div
                 className="h-full bg-[#A67C2E] transition-all duration-300"
                 style={{ width: `${stats.overallRotPercentage}%` }}
@@ -233,79 +233,81 @@ export function App() {
           </div>
 
           {/* Two Metric Boxes: Active RAM & Freed RAM */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="border border-[#1B2A26] bg-[#E6DFD5] p-3 shadow-[2px_2px_0px_#1B2A26]">
-              <div className="flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase text-[#536059] mb-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div className="border border-[#1B2A26] bg-[#E6DFD5] p-2 sm:p-2.5 shadow-[1.5px_1.5px_0px_#1B2A26]">
+              <div className="flex items-center gap-1 text-[10px] font-mono font-bold uppercase text-[#536059] mb-0.5">
                 <span className="text-[#B53F28]">⚙</span> ACTIVE RAM USAGE
               </div>
-              <div className="text-2xl font-black font-mono text-[#1B2A26]">
-                {stats.totalRamUsedMb} <span className="text-xs font-normal text-[#536059]">MB</span>
+              <div className="text-xl font-black font-mono text-[#1B2A26] leading-tight">
+                {stats.totalRamUsedMb} <span className="text-[10px] font-normal text-[#536059]">MB</span>
               </div>
             </div>
 
-            <div className="border border-[#1B2A26] bg-[#E6DFD5] p-3 shadow-[2px_2px_0px_#1B2A26]">
-              <div className="flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase text-[#536059] mb-1">
+            <div className="border border-[#1B2A26] bg-[#E6DFD5] p-2 sm:p-2.5 shadow-[1.5px_1.5px_0px_#1B2A26]">
+              <div className="flex items-center gap-1 text-[10px] font-mono font-bold uppercase text-[#536059] mb-0.5">
                 <span className="text-[#2E4B37]">🗄</span> FREED RAM (GRAVEYARD)
               </div>
-              <div className="text-2xl font-black font-mono text-[#1B2A26]">
-                {stats.totalRamFreedMb} <span className="text-xs font-normal text-[#536059]">MB</span>
+              <div className="text-xl font-black font-mono text-[#1B2A26] leading-tight">
+                {stats.totalRamFreedMb} <span className="text-[10px] font-normal text-[#536059]">MB</span>
               </div>
             </div>
           </div>
 
           {/* Stage Distribution List */}
-          <div className="border border-[#1B2A26] bg-[#E6DFD5] p-4 shadow-[2px_2px_0px_#1B2A26] space-y-2">
-            <div className="text-[11px] font-mono font-bold uppercase text-[#536059] mb-2 tracking-wide">
+          <div className="border border-[#1B2A26] bg-[#E6DFD5] p-2.5 sm:p-3 shadow-[1.5px_1.5px_0px_#1B2A26] space-y-1">
+            <div className="text-[10px] font-mono font-bold uppercase text-[#536059] mb-1 tracking-wide">
               STAGE DISTRIBUTION
             </div>
             
-            <div className="flex justify-between items-center text-xs font-mono font-bold text-[#1B2A26]">
-              <span className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 bg-[#2E4B37] inline-block"></span>
-                FRESH (&lt;4h)
-              </span>
-              <span>{stats.freshCount}</span>
-            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] font-mono font-bold text-[#1B2A26]">
+              <div className="flex items-center justify-between p-1 bg-[#DDD5C7]/50 border border-[#1B2A26]/20">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 bg-[#2E4B37] inline-block"></span>
+                  FRESH (&lt;4h)
+                </span>
+                <span>{stats.freshCount}</span>
+              </div>
 
-            <div className="flex justify-between items-center text-xs font-mono font-bold text-[#1B2A26]">
-              <span className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 bg-[#A67C2E] inline-block"></span>
-                STALE (4-24h)
-              </span>
-              <span>{stats.staleCount}</span>
-            </div>
+              <div className="flex items-center justify-between p-1 bg-[#DDD5C7]/50 border border-[#1B2A26]/20">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 bg-[#A67C2E] inline-block"></span>
+                  STALE (4-24h)
+                </span>
+                <span>{stats.staleCount}</span>
+              </div>
 
-            <div className="flex justify-between items-center text-xs font-mono font-bold text-[#1B2A26]">
-              <span className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 bg-[#B53F28] inline-block"></span>
-                ROTTEN (24-72h)
-              </span>
-              <span>{stats.rottenCount}</span>
-            </div>
+              <div className="flex items-center justify-between p-1 bg-[#DDD5C7]/50 border border-[#1B2A26]/20">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 bg-[#B53F28] inline-block"></span>
+                  ROTTEN (24-72h)
+                </span>
+                <span>{stats.rottenCount}</span>
+              </div>
 
-            <div className="flex justify-between items-center text-xs font-mono font-bold text-[#1B2A26]">
-              <span className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 bg-[#6B6560] inline-block"></span>
-                FOSSILIZED (&gt;72h)
-              </span>
-              <span>{stats.fossilizedCount}</span>
+              <div className="flex items-center justify-between p-1 bg-[#DDD5C7]/50 border border-[#1B2A26]/20">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 bg-[#6B6560] inline-block"></span>
+                  FOSSIL (&gt;72h)
+                </span>
+                <span>{stats.fossilizedCount}</span>
+              </div>
             </div>
           </div>
 
           {/* Action Buttons: Water All & Mass Cremate */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
             <button
               onClick={handleWaterAll}
-              className="py-2.5 px-4 bg-[#E6DFD5] text-[#1B2A26] border-2 border-[#1B2A26] shadow-[3px_3px_0px_#1B2A26] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_#1B2A26] font-mono text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2 hover:bg-[#D4CBBC] transition-colors"
+              className="py-1.5 px-3 bg-[#E6DFD5] text-[#1B2A26] border-1.5 border-[#1B2A26] shadow-[2px_2px_0px_#1B2A26] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[0.5px_0.5px_0px_#1B2A26] font-mono text-[11px] font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 hover:bg-[#D4CBBC] transition-colors"
             >
               <span className="text-[#2E4B37]">💧</span>
               WATER ALL TABS
             </button>
             <button
               onClick={handleCremateRotten}
-              className="py-2.5 px-4 bg-[#B53F28] text-[#E6DFD5] border-2 border-[#1B2A26] shadow-[3px_3px_0px_#1B2A26] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_#1B2A26] font-mono text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2 hover:bg-[#9E3520] transition-colors"
+              className="py-1.5 px-3 bg-[#B53F28] text-[#E6DFD5] border-1.5 border-[#1B2A26] shadow-[2px_2px_0px_#1B2A26] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[0.5px_0.5px_0px_#1B2A26] font-mono text-[11px] font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 hover:bg-[#9E3520] transition-colors"
             >
-              <Flame className="w-4 h-4 text-[#E6DFD5]" />
+              <Flame className="w-3.5 h-3.5 text-[#E6DFD5]" />
               MASS CREMATE ROTTEN ({stats.rottenCount + stats.fossilizedCount})
             </button>
           </div>
