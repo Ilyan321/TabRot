@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "TabRot: The Digital Tab Terrarium & Graveyard",
+  "version": "1.0.0",
+  "description": "Watch your neglected browser tabs decay, rot, and accumulate biological debt. Anti-slop tab graveyard & CPR tool.",
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Open TabRot HUD"
+  },
+  "background": {
+    "service_worker": "src/extension/background.ts",
+    "type": "module"
+  }
+}
