@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "TabRot: The Digital Tab Terrarium & Graveyard",
   "version": "1.0.0",
-  "description": "Watch your neglected browser tabs decay, rot, and accumulate biological debt. Anti-slop tab graveyard & CPR tool.",
+  "description": "A living digital terrarium where neglected tabs rot in real time, beg for CPR, or get cremated into a searchable graveyard.",
   "permissions": [
     "tabs",
     "storage"

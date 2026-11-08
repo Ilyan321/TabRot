@@ -189,7 +189,7 @@ export function App() {
               TABROT <span className="text-lg font-normal text-[#536059] lowercase">/terrarium</span>
             </h1>
             <p className="text-xs text-[#536059] mt-1 max-w-xl font-medium">
-              An interactive digital terrarium where neglected browser tabs visibly decay, accumulate biological debt, and face sarcastic judgement.
+              A living digital terrarium where neglected tabs rot in real time, beg for CPR, or get cremated into a searchable graveyard.
             </p>
           </div>
 
