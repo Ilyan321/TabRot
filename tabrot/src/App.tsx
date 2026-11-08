@@ -13,6 +13,7 @@ import { soundEngine } from './engine/soundEngine';
 import { fetchGroqRoast } from './engine/roastEngine';
 import { SpecimenCard } from './components/SpecimenCard';
 import { Graveyard } from './components/Graveyard';
+import { PrivacyModal } from './components/PrivacyModal';
 import {
   Flame,
   Volume2,
@@ -21,6 +22,7 @@ import {
   RefreshCw,
   FolderArchive,
   Layers,
+  ShieldCheck,
 } from 'lucide-react';
 
 export function App() {
@@ -31,6 +33,7 @@ export function App() {
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isRoasting, setIsRoasting] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState<boolean>(false);
 
   const refreshLiveTabs = async () => {
     setIsRefreshing(true);
@@ -468,13 +471,27 @@ export function App() {
 
         {/* FOOTER: Fixed to bottom of viewport layout */}
         <footer className="pt-6 border-t border-[#1B2A26]/20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#5E6963] gap-2 mt-auto">
-          <div>
-            IDEA LAB HACKS 2026 PROTOTYPE • BUILT BY ILYAN KHAN
+          <div className="flex items-center gap-3">
+            <span>IDEA LAB HACKS 2026 • BUILT BY ILYAN KHAN</span>
+            <span>•</span>
+            <button
+              onClick={() => {
+                soundEngine.playClick();
+                setIsPrivacyOpen(true);
+              }}
+              className="font-bold text-[#1B2A26] hover:underline flex items-center gap-1 uppercase"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-[#2E4B37]" />
+              PRIVACY & LEGAL
+            </button>
           </div>
           <div>
-            ZERO AUDIO ASSETS (NATIVE WEB AUDIO SYNTH) • ANTI-SLOP DESIGN PROTOCOL
+            100% LOCAL-FIRST • ZERO COOKIES • PROCEDURAL WEB AUDIO
           </div>
         </footer>
+
+        {/* Legal, Privacy & Transparency Modal */}
+        <PrivacyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
       </div>
     </div>
   );
