@@ -36,8 +36,17 @@ export function Popup() {
   }, []);
 
   const stats = calculateTerrariumStats(tabs, []);
-  const rottenTabs = tabs.filter((t) => t.stage === 'rotten' || t.stage === 'fossilized');
-  const displayTabs = rottenTabs.length > 0 ? rottenTabs : tabs;
+  
+  // Sort priority: Most Neglected / Rotten first (highest rotScore, oldest lastInteractedAt)
+  const sortedTabs = [...tabs].sort((a, b) => {
+    if (b.rotScore !== a.rotScore) {
+      return b.rotScore - a.rotScore; // Highest decay first
+    }
+    return a.lastInteractedAt - b.lastInteractedAt; // Oldest neglected first
+  });
+
+  const rottenTabs = sortedTabs.filter((t) => t.stage === 'rotten' || t.stage === 'fossilized');
+  const displayTabs = sortedTabs;
 
   const handleWater = (id: string) => {
     soundEngine.playWater();
@@ -104,11 +113,11 @@ export function Popup() {
         </div>
       </div>
 
-      {/* Tab Specimen List (Rotten prioritized, or active open tabs) */}
+      {/* Tab Specimen List (Prioritized: Most Neglected & Dying Tabs First) */}
       <div className="space-y-1.5">
         <div className="flex justify-between items-center text-[10px] font-bold text-[#536059] uppercase tracking-wider">
-          <span>{rottenTabs.length > 0 ? `CRITICAL DECAY (${rottenTabs.length})` : `OPEN SPECIMENS (${tabs.length})`}</span>
-          {rottenTabs.length === 0 && <span className="text-[#2E4B37] text-[9px]">ALL HEALTHY 🌿</span>}
+          <span>PRIORITY TRIAGE (MOST NEGLECTED)</span>
+          <span className="text-[9px] text-[#A67C2E]">TOP 4 OF {tabs.length}</span>
         </div>
 
         {displayTabs.length === 0 ? (
