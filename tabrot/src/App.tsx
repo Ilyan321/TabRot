@@ -12,7 +12,6 @@ import { fetchGroqRoast } from './engine/roastEngine';
 import { SpecimenCard } from './components/SpecimenCard';
 import { Graveyard } from './components/Graveyard';
 import {
-  Droplet,
   Flame,
   Volume2,
   VolumeX,
@@ -206,70 +205,109 @@ export function App() {
           </div>
         </header>
 
-        {/* STATS HUD: High-Density Monospace Dashboard */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div className="p-3 border border-[#1B2A26] bg-[#F8F5F0]">
-            <div className="text-[10px] text-[#5E6963] uppercase font-semibold">TOTAL DECAY RATE</div>
-            <div className="text-2xl font-bold mt-1 flex items-baseline gap-2">
-              {stats.overallRotPercentage}%
-              <span className="text-[11px] font-normal text-[#5E6963]">
-                {stats.overallRotPercentage > 60 ? 'CRITICAL MOLD' : stats.overallRotPercentage > 30 ? 'ELEVATED' : 'NOMINAL'}
-              </span>
+        {/* ECOSYSTEM DIAGNOSTICS: Precision Neobrutalist Field Notebook HUD */}
+        <section className="border-2 border-[#1B2A26] bg-[#F4EFEA] p-5 shadow-[4px_4px_0px_#1B2A26] space-y-4">
+          {/* Header */}
+          <div className="flex items-center justify-between pb-3 border-b border-[#1B2A26]">
+            <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-[#1B2A26]">
+              <Layers className="w-4 h-4 text-[#1B2A26]" />
+              ECOSYSTEM DIAGNOSTICS
             </div>
-            <div className="w-full bg-[#1B2A26]/10 h-1 mt-2">
+            <span className="px-2 py-0.5 text-[10px] font-mono font-bold tracking-widest text-[#F4EFEA] bg-[#1B2A26] uppercase">
+              LIVE
+            </span>
+          </div>
+
+          {/* Average Ecosystem Rot Bar */}
+          <div>
+            <div className="flex justify-between items-center text-xs font-mono font-bold uppercase mb-1.5 text-[#1B2A26]">
+              <span>AVERAGE ECOSYSTEM ROT</span>
+              <span>{stats.overallRotPercentage}%</span>
+            </div>
+            <div className="w-full h-3 border border-[#1B2A26] bg-[#EAE5DE] p-0.5">
               <div
-                className="bg-[#C84B31] h-1"
+                className="h-full bg-[#BFA054] transition-all duration-300"
                 style={{ width: `${stats.overallRotPercentage}%` }}
-              ></div>
+              />
             </div>
           </div>
 
-          <div className="p-3 border border-[#1B2A26] bg-[#F8F5F0]">
-            <div className="text-[10px] text-[#5E6963] uppercase font-semibold">RAM ESTIMATE</div>
-            <div className="text-2xl font-bold mt-1">
-              ~{stats.totalRamUsedMb} <span className="text-xs font-normal text-[#5E6963]">MB ACTIVE</span>
+          {/* Two Metric Boxes: Active RAM & Freed RAM */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="border border-[#1B2A26] bg-[#F4EFEA] p-3 shadow-[2px_2px_0px_#1B2A26]">
+              <div className="flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase text-[#5E6963] mb-1">
+                <span className="text-[#C84B31]">⚙</span> ACTIVE RAM USAGE
+              </div>
+              <div className="text-2xl font-black font-mono text-[#1B2A26]">
+                {stats.totalRamUsedMb} <span className="text-xs font-normal text-[#5E6963]">MB</span>
+              </div>
             </div>
-            <div className="text-[11px] text-[#3D5A45] mt-1 font-semibold">
-              +{stats.totalRamFreedMb} MB PREVENTED
-            </div>
-          </div>
 
-          <div className="p-3 border border-[#1B2A26] bg-[#F8F5F0]">
-            <div className="text-[10px] text-[#5E6963] uppercase font-semibold">SPECIMEN HEALTH</div>
-            <div className="text-xs mt-2 space-y-0.5">
-              <div className="flex justify-between">
-                <span className="text-[#3D5A45]">Fresh:</span>
-                <span>{stats.freshCount}</span>
+            <div className="border border-[#1B2A26] bg-[#F4EFEA] p-3 shadow-[2px_2px_0px_#1B2A26]">
+              <div className="flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase text-[#5E6963] mb-1">
+                <span className="text-[#3D5A45]">🗄</span> FREED RAM (GRAVEYARD)
               </div>
-              <div className="flex justify-between">
-                <span className="text-[#8A7129]">Stale:</span>
-                <span>{stats.staleCount}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#C84B31]">Rotten / Fossil:</span>
-                <span>{stats.rottenCount + stats.fossilizedCount}</span>
+              <div className="text-2xl font-black font-mono text-[#1B2A26]">
+                {stats.totalRamFreedMb} <span className="text-xs font-normal text-[#5E6963]">MB</span>
               </div>
             </div>
           </div>
 
-          <div className="p-3 border border-[#1B2A26] bg-[#F8F5F0] flex flex-col justify-between">
-            <div className="text-[10px] text-[#5E6963] uppercase font-semibold">GLOBAL SANCTIONS</div>
-            <div className="flex flex-col gap-1.5 mt-2">
-              <button
-                onClick={handleWaterAll}
-                className="brutalist-btn py-1 px-2 text-[10px] flex items-center justify-center gap-1 text-[#3D5A45]"
-              >
-                <Droplet className="w-3 h-3" />
-                WATER ALL TABS
-              </button>
-              <button
-                onClick={handleCremateRotten}
-                className="brutalist-btn py-1 px-2 text-[10px] flex items-center justify-center gap-1 text-[#C84B31] border-[#C84B31] bg-[#C84B31]/10"
-              >
-                <Flame className="w-3 h-3" />
-                PURGE ROTTEN ({stats.rottenCount + stats.fossilizedCount})
-              </button>
+          {/* Stage Distribution List */}
+          <div className="border border-[#1B2A26] bg-[#F4EFEA] p-4 shadow-[2px_2px_0px_#1B2A26] space-y-2">
+            <div className="text-[11px] font-mono font-bold uppercase text-[#5E6963] mb-2 tracking-wide">
+              STAGE DISTRIBUTION
             </div>
+            
+            <div className="flex justify-between items-center text-xs font-mono font-bold text-[#1B2A26]">
+              <span className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 bg-[#3D5A45] inline-block"></span>
+                FRESH (&lt;4h)
+              </span>
+              <span>{stats.freshCount}</span>
+            </div>
+
+            <div className="flex justify-between items-center text-xs font-mono font-bold text-[#1B2A26]">
+              <span className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 bg-[#BFA054] inline-block"></span>
+                STALE (4-24h)
+              </span>
+              <span>{stats.staleCount}</span>
+            </div>
+
+            <div className="flex justify-between items-center text-xs font-mono font-bold text-[#1B2A26]">
+              <span className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 bg-[#C84B31] inline-block"></span>
+                ROTTEN (24-72h)
+              </span>
+              <span>{stats.rottenCount}</span>
+            </div>
+
+            <div className="flex justify-between items-center text-xs font-mono font-bold text-[#1B2A26]">
+              <span className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 bg-[#7A7571] inline-block"></span>
+                FOSSILIZED (&gt;72h)
+              </span>
+              <span>{stats.fossilizedCount}</span>
+            </div>
+          </div>
+
+          {/* Action Buttons: Water All & Mass Cremate */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <button
+              onClick={handleWaterAll}
+              className="py-2.5 px-4 bg-[#F4EFEA] text-[#1B2A26] border-2 border-[#1B2A26] shadow-[3px_3px_0px_#1B2A26] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_#1B2A26] font-mono text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2 hover:bg-[#EAE5DE] transition-colors"
+            >
+              <span className="text-[#3D5A45]">💧</span>
+              WATER ALL TABS
+            </button>
+            <button
+              onClick={handleCremateRotten}
+              className="py-2.5 px-4 bg-[#C84B31] text-[#F4EFEA] border-2 border-[#1B2A26] shadow-[3px_3px_0px_#1B2A26] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_#1B2A26] font-mono text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2 hover:bg-[#B33E26] transition-colors"
+            >
+              <Flame className="w-4 h-4 text-[#F4EFEA]" />
+              MASS CREMATE ROTTEN ({stats.rottenCount + stats.fossilizedCount})
+            </button>
           </div>
         </section>
 
