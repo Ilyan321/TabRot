@@ -12,7 +12,6 @@
     "default_title": "Open TabRot HUD"
   },
   "background": {
-    "service_worker": "src/extension/background.ts",
-    "type": "module"
+    "service_worker": "background.js"
   }
 }
