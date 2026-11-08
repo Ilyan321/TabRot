@@ -34,6 +34,22 @@ export function App() {
   const [isRoasting, setIsRoasting] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState<boolean>(false);
+  const [isFirstLaunch, setIsFirstLaunch] = useState<boolean>(false);
+
+  // Check if first time opening extension/dashboard
+  useEffect(() => {
+    const acknowledged = localStorage.getItem('tabrot_onboarding_ack');
+    if (!acknowledged) {
+      setIsPrivacyOpen(true);
+      setIsFirstLaunch(true);
+    }
+  }, []);
+
+  const handleClosePrivacy = () => {
+    localStorage.setItem('tabrot_onboarding_ack', 'true');
+    setIsPrivacyOpen(false);
+    setIsFirstLaunch(false);
+  };
 
   const refreshLiveTabs = async () => {
     setIsRefreshing(true);
@@ -469,11 +485,17 @@ export function App() {
           )}
         </main>
 
-        {/* FOOTER: Fixed to bottom of viewport layout */}
-        <footer className="pt-6 border-t border-[#1B2A26]/20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#5E6963] gap-2 mt-auto">
-          <div className="flex items-center gap-3">
-            <span>IDEA LAB HACKS 2026 • BUILT BY ILYAN KHAN</span>
+        {/* FOOTER */}
+        <footer className="pt-6 border-t border-[#1B2A26]/20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#5E6963] gap-3 mt-auto">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="font-bold text-[#1B2A26]">TABROT</span>
             <span>•</span>
+            <span>Crafted by Ilyan Khan</span>
+            <span>•</span>
+            <span>IdeaLab Hacks 2026</span>
+          </div>
+
+          <div className="flex items-center gap-4">
             <button
               onClick={() => {
                 soundEngine.playClick();
@@ -482,16 +504,31 @@ export function App() {
               className="font-bold text-[#1B2A26] hover:underline flex items-center gap-1 uppercase"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-[#2E4B37]" />
-              PRIVACY & LEGAL
+              Privacy & Disclosures
             </button>
-          </div>
-          <div>
-            100% LOCAL-FIRST • ZERO COOKIES • PROCEDURAL WEB AUDIO
+            <a
+              href="https://github.com/Ilyan321/TabRot"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:underline font-bold text-[#1B2A26]"
+            >
+              GitHub
+            </a>
+            <a
+              href="mailto:ilyaankhan342@gmail.com"
+              className="hover:underline font-bold text-[#2E4B37]"
+            >
+              Contact
+            </a>
           </div>
         </footer>
 
         {/* Legal, Privacy & Transparency Modal */}
-        <PrivacyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
+        <PrivacyModal
+          isOpen={isPrivacyOpen}
+          isFirstTime={isFirstLaunch}
+          onClose={handleClosePrivacy}
+        />
       </div>
     </div>
   );

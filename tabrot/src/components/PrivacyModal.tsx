@@ -5,31 +5,34 @@ import { soundEngine } from '../engine/soundEngine';
 interface PrivacyModalProps {
   isOpen: boolean;
   onClose: () => void;
+  isFirstTime?: boolean;
 }
 
-export const PrivacyModal: FC<PrivacyModalProps> = ({ isOpen, onClose }) => {
+export const PrivacyModal: FC<PrivacyModalProps> = ({ isOpen, onClose, isFirstTime = false }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1B2A26]/70 backdrop-blur-xs font-mono">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1B2A26]/75 backdrop-blur-xs font-mono">
       <div className="w-full max-w-2xl bg-[#E6DFD5] border-2 border-[#1B2A26] shadow-[6px_6px_0px_#1B2A26] flex flex-col max-h-[90vh]">
         {/* Modal Header */}
         <div className="p-3.5 bg-[#DDD5C7] border-b-2 border-[#1B2A26] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-[#2E4B37]" />
             <span className="text-xs font-black uppercase tracking-wider text-[#1B2A26]">
-              TRANSPARENCY, PRIVACY & LEGAL MANIFEST
+              {isFirstTime ? 'WELCOME TO TABROT — FIRST TIME ONBOARDING' : 'TRANSPARENCY, PRIVACY & LEGAL MANIFEST'}
             </span>
           </div>
-          <button
-            onClick={() => {
-              soundEngine.playClick();
-              onClose();
-            }}
-            className="p-1 hover:bg-[#1B2A26]/10 text-[#1B2A26] transition-colors"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          {!isFirstTime && (
+            <button
+              onClick={() => {
+                soundEngine.playClick();
+                onClose();
+              }}
+              className="p-1 hover:bg-[#1B2A26]/10 text-[#1B2A26] transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* Modal Scrollable Body */}
@@ -115,15 +118,18 @@ export const PrivacyModal: FC<PrivacyModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Modal Footer */}
-        <div className="p-3 bg-[#DDD5C7] border-t-2 border-[#1B2A26] flex justify-end">
+        <div className="p-3 bg-[#DDD5C7] border-t-2 border-[#1B2A26] flex items-center justify-between">
+          <span className="text-[10px] text-[#536059]">
+            {isFirstTime ? 'Please review & acknowledge to initialize TabRot' : 'Local-first architecture'}
+          </span>
           <button
             onClick={() => {
               soundEngine.playClick();
               onClose();
             }}
-            className="brutalist-btn px-4 py-1.5 text-xs text-[#1B2A26]"
+            className="brutalist-btn px-4 py-1.5 text-xs text-[#E6DFD5] bg-[#1B2A26] hover:bg-[#2A3F39]"
           >
-            ACKNOWLEDGE & CLOSE
+            {isFirstTime ? 'I UNDERSTAND & ENTER TERRARIUM' : 'ACKNOWLEDGE & CLOSE'}
           </button>
         </div>
       </div>
