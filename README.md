@@ -44,7 +44,7 @@ Every knowledge worker suffers from tab hoarding. You open a 3-hour tutorial vid
 ### 1. Web Simulator Mode
 ```bash
 git clone https://github.com/Ilyan321/TabRot.git
-cd TabRot/tabrot
+cd TabRot
 npm install
 npm run dev
 ```
@@ -57,7 +57,7 @@ npm run build
 ```
 2. Open Google Chrome and navigate to `chrome://extensions`.
 3. Toggle on **Developer mode** in the top-right corner.
-4. Click **Load unpacked** and select the `/tabrot/dist` folder.
+4. Click **Load unpacked** and select the root `dist` folder.
 5. Pin **TabRot** to your browser toolbar!
 
 ---
