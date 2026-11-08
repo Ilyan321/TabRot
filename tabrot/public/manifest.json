@@ -5,7 +5,8 @@
   "description": "A living digital terrarium where neglected tabs rot in real time, beg for CPR, or get cremated into a searchable graveyard.",
   "permissions": [
     "tabs",
-    "storage"
+    "storage",
+    "processes"
   ],
   "action": {
     "default_popup": "popup.html",
