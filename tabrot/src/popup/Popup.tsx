@@ -37,6 +37,7 @@ export function Popup() {
 
   const stats = calculateTerrariumStats(tabs, []);
   const rottenTabs = tabs.filter((t) => t.stage === 'rotten' || t.stage === 'fossilized');
+  const displayTabs = rottenTabs.length > 0 ? rottenTabs : tabs;
 
   const handleWater = (id: string) => {
     soundEngine.playWater();
@@ -103,18 +104,19 @@ export function Popup() {
         </div>
       </div>
 
-      {/* Quick Rotten Triage List (Top 3) */}
+      {/* Tab Specimen List (Rotten prioritized, or active open tabs) */}
       <div className="space-y-1.5">
-        <div className="text-[10px] font-bold text-[#536059] uppercase tracking-wider">
-          CRITICAL DECAY ({rottenTabs.length})
+        <div className="flex justify-between items-center text-[10px] font-bold text-[#536059] uppercase tracking-wider">
+          <span>{rottenTabs.length > 0 ? `CRITICAL DECAY (${rottenTabs.length})` : `OPEN SPECIMENS (${tabs.length})`}</span>
+          {rottenTabs.length === 0 && <span className="text-[#2E4B37] text-[9px]">ALL HEALTHY 🌿</span>}
         </div>
 
-        {rottenTabs.length === 0 ? (
+        {displayTabs.length === 0 ? (
           <div className="p-3 border border-dashed border-[#1B2A26]/30 text-center text-[10px] text-[#536059] bg-[#DDD5C7]/50">
-            NO ROTTEN TABS. ALL SPECIMENS ARE FRESH! 🌿
+            NO ACTIVE TABS DETECTED.
           </div>
         ) : (
-          rottenTabs.slice(0, 3).map((tab) => (
+          displayTabs.slice(0, 4).map((tab) => (
             <div
               key={tab.id}
               className="p-2 border border-[#1B2A26] bg-[#DDD5C7] flex items-center justify-between gap-2 shadow-[1.5px_1.5px_0px_#1B2A26]"
@@ -123,8 +125,19 @@ export function Popup() {
                 <div className="text-[11px] font-bold text-[#1B2A26] truncate">
                   {tab.title}
                 </div>
-                <div className="text-[9px] text-[#B53F28] font-bold uppercase">
-                  {tab.stage} • {tab.rotScore}% ROT
+                <div className="text-[9px] font-bold uppercase flex items-center gap-1.5 mt-0.5">
+                  <span
+                    className={`inline-block w-1.5 h-1.5 rounded-full ${
+                      tab.stage === 'fresh'
+                        ? 'bg-[#2E4B37]'
+                        : tab.stage === 'stale'
+                        ? 'bg-[#A67C2E]'
+                        : 'bg-[#B53F28]'
+                    }`}
+                  />
+                  <span className={tab.stage === 'rotten' || tab.stage === 'fossilized' ? 'text-[#B53F28]' : 'text-[#536059]'}>
+                    {tab.stage} • {tab.rotScore}% ROT • ~{tab.ramEstimateMb}MB
+                  </span>
                 </div>
               </div>
 
