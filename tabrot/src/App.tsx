@@ -194,7 +194,7 @@ export function App() {
 
   return (
     <div className="min-h-screen text-[#1B2A26] flex flex-col font-mono selection:bg-[#2E4B37] selection:text-[#E6DFD5]">
-      <div className="w-full max-w-6xl mx-auto p-4 sm:p-6 lg:p-10 flex-1 flex flex-col space-y-6">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 pt-3 sm:pt-4 pb-6 sm:pb-8 flex-1 flex flex-col space-y-4">
         
         {/* HEADER BAR: Editorial Title & Controls */}
         <header className="border-b-2 border-[#1B2A26] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
