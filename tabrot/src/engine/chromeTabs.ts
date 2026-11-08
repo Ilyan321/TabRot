@@ -6,6 +6,40 @@ export const isChromeExtension = (): boolean => {
   return typeof chrome !== 'undefined' && Boolean(chrome.tabs) && Boolean(chrome.tabs.query);
 };
 
+// Query the live JS Heap & DOM renderer memory directly from the tab's runtime
+const queryTabLiveMemory = async (tabId: number): Promise<number | null> => {
+  if (!isChromeExtension() || !chrome.scripting || !chrome.scripting.executeScript) {
+    return null;
+  }
+
+  try {
+    const results = await chrome.scripting.executeScript({
+      target: { tabId },
+      func: () => {
+        try {
+          const perf = window.performance as unknown as { memory?: { totalJSHeapSize: number; usedJSHeapSize: number } };
+          if (perf && perf.memory) {
+            // Chrome's Tab Hover metric is: Renderer Base Overhead (~45-55MB) + Allocated Heap + DOM tree
+            const heapBytes = perf.memory.totalJSHeapSize || perf.memory.usedJSHeapSize || 0;
+            const heapMb = Math.round(heapBytes / (1024 * 1024));
+            return Math.max(45, 50 + heapMb);
+          }
+        } catch {
+          // ignore inside sandbox
+        }
+        return null;
+      },
+    });
+
+    if (results && results[0] && typeof results[0].result === 'number') {
+      return results[0].result;
+    }
+  } catch {
+    // Script execution restricted on internal or non-HTTP tabs
+  }
+  return null;
+};
+
 // Fetch real open tabs from Chrome, reading live process memory when available
 export const fetchRealChromeTabs = async (): Promise<TabSpecimen[] | null> => {
   if (!isChromeExtension()) return null;
@@ -17,61 +51,41 @@ export const fetchRealChromeTabs = async (): Promise<TabSpecimen[] | null> => {
       const savedMetadata: Record<string, { createdAt: number; lastInteractedAt: number; pinned: boolean }> =
         savedMetadataStr ? JSON.parse(savedMetadataStr) : {};
 
-      // Attempt to query real process memory if chrome.processes API is available
-      const liveProcessMemoryMap: Record<number, number> = {};
-      const chromeProcesses = (chrome as unknown as { processes?: { getProcessInfo: (ids: number[], includeMemory: boolean, cb: (procs: Record<number, { tabs: number[]; privateMemory?: number; jsMemoryAllocated?: number }>) => void) => void } }).processes;
+      const validTabs = realTabs.filter((t) => t.id && t.url && !t.url.startsWith('chrome://'));
 
-      if (chromeProcesses && typeof chromeProcesses.getProcessInfo === 'function') {
-        try {
-          await new Promise<void>((done) => {
-            chromeProcesses.getProcessInfo([], true, (procs) => {
-              if (procs) {
-                Object.values(procs).forEach((proc) => {
-                  const memBytes = proc.privateMemory || proc.jsMemoryAllocated || 0;
-                  const memMb = Math.round(memBytes / (1024 * 1024));
-                  if (proc.tabs && proc.tabs.length > 0) {
-                    proc.tabs.forEach((tabId) => {
-                      liveProcessMemoryMap[tabId] = memMb;
-                    });
-                  }
-                });
-              }
-              done();
-            });
-          });
-        } catch {
-          // Fallback if process API not allowed on specific build
-        }
-      }
+      // Concurrently query live memory for each tab
+      const memoryPromises = validTabs.map(async (t) => {
+        if (!t.id) return null;
+        return queryTabLiveMemory(t.id);
+      });
+      const liveMemories = await Promise.all(memoryPromises);
 
-      const specimens: TabSpecimen[] = realTabs
-        .filter((t) => t.id && t.url && !t.url.startsWith('chrome://'))
-        .map((t, idx) => {
-          const tabIdStr = `chrome-${t.id}`;
-          const existing = savedMetadata[tabIdStr];
+      const specimens: TabSpecimen[] = validTabs.map((t, idx) => {
+        const tabIdStr = `chrome-${t.id}`;
+        const existing = savedMetadata[tabIdStr];
 
-          // Use live process memory if available; otherwise calculate calibrated dynamic estimate
-          const realLiveMb = t.id ? liveProcessMemoryMap[t.id] : undefined;
-          const ramEstimateMb = realLiveMb && realLiveMb > 10 ? realLiveMb : calculateRamEstimate(t.url || '', t.title || '');
+        // Read real live memory if injected script returned a value, otherwise calculate calibrated estimate
+        const liveMb = liveMemories[idx];
+        const ramEstimateMb = liveMb && liveMb > 20 ? liveMb : calculateRamEstimate(t.url || '', t.title || '');
 
-          const createdAt = existing?.createdAt || now - idx * 4 * 60 * 60 * 1000;
-          const lastInteractedAt = existing?.lastInteractedAt || createdAt;
+        const createdAt = existing?.createdAt || now - idx * 4 * 60 * 60 * 1000;
+        const lastInteractedAt = existing?.lastInteractedAt || createdAt;
 
-          const base: TabSpecimen = {
-            id: tabIdStr,
-            url: t.url || '',
-            title: t.title || 'Untitled Tab',
-            favIconUrl: t.favIconUrl,
-            createdAt,
-            lastInteractedAt,
-            stage: 'fresh',
-            rotScore: 0,
-            ramEstimateMb,
-            pinned: Boolean(t.pinned || existing?.pinned),
-          };
+        const base: TabSpecimen = {
+          id: tabIdStr,
+          url: t.url || '',
+          title: t.title || 'Untitled Tab',
+          favIconUrl: t.favIconUrl,
+          createdAt,
+          lastInteractedAt,
+          stage: 'fresh',
+          rotScore: 0,
+          ramEstimateMb,
+          pinned: Boolean(t.pinned || existing?.pinned),
+        };
 
-          return calculateDecay(base, now);
-        });
+        return calculateDecay(base, now);
+      });
 
       // Update storage cache
       const newMetadata: Record<string, { createdAt: number; lastInteractedAt: number; pinned: boolean }> = {};
