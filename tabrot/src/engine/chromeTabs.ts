@@ -47,9 +47,25 @@ export const fetchRealChromeTabs = async (): Promise<TabSpecimen[] | null> => {
   return new Promise((resolve) => {
     chrome.tabs.query({}, async (realTabs) => {
       const now = Date.now();
+      
+      // Sync from chrome.storage.local (updated by service worker on tab click)
+      let storageMetadata: Record<string, { createdAt: number; lastInteractedAt: number; pinned: boolean }> = {};
+      try {
+        if (chrome.storage && chrome.storage.local) {
+          const storeData = await chrome.storage.local.get(['tabrot_tabs_metadata']);
+          if (storeData && storeData.tabrot_tabs_metadata) {
+            storageMetadata = storeData.tabrot_tabs_metadata as Record<string, { createdAt: number; lastInteractedAt: number; pinned: boolean }>;
+          }
+        }
+      } catch {
+        // fallback to localStorage
+      }
+
       const savedMetadataStr = localStorage.getItem('tabrot_tabs_metadata');
-      const savedMetadata: Record<string, { createdAt: number; lastInteractedAt: number; pinned: boolean }> =
+      const localMetadata: Record<string, { createdAt: number; lastInteractedAt: number; pinned: boolean }> =
         savedMetadataStr ? JSON.parse(savedMetadataStr) : {};
+
+      const savedMetadata = { ...localMetadata, ...storageMetadata };
 
       const validTabs = realTabs.filter(
         (t) =>
@@ -77,7 +93,8 @@ export const fetchRealChromeTabs = async (): Promise<TabSpecimen[] | null> => {
         const ramEstimateMb = liveMb && liveMb > 20 ? liveMb : calculateRamEstimate(t.url || '', t.title || '');
 
         const createdAt = existing?.createdAt || now - idx * 4 * 60 * 60 * 1000;
-        const lastInteractedAt = existing?.lastInteractedAt || createdAt;
+        // If tab is currently active in the current window, it was just touched!
+        const lastInteractedAt = t.active ? now : (existing?.lastInteractedAt || createdAt);
 
         const base: TabSpecimen = {
           id: tabIdStr,
@@ -105,6 +122,9 @@ export const fetchRealChromeTabs = async (): Promise<TabSpecimen[] | null> => {
         };
       });
       localStorage.setItem('tabrot_tabs_metadata', JSON.stringify(newMetadata));
+      if (chrome.storage && chrome.storage.local) {
+        chrome.storage.local.set({ tabrot_tabs_metadata: newMetadata });
+      }
 
       resolve(specimens);
     });
