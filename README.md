@@ -41,17 +41,19 @@ Every knowledge worker suffers from tab hoarding. You open a 3-hour tutorial vid
 
 ## 🚀 Quickstart & Installation
 
-### ⚡ 1-Line Terminal Install (Like Big Products)
+### ⚡ 1-Line Terminal Install
 
 #### On macOS & Linux:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Ilyan321/TabRot/main/install.sh | bash
+curl -fsSL https://tabrot.aenox.me/install.sh | bash
 ```
+*(Fallback mirror: `curl -fsSL https://raw.githubusercontent.com/Ilyan321/TabRot/main/install.sh | bash`)*
 
 #### On Windows (PowerShell):
 ```powershell
-irm https://raw.githubusercontent.com/Ilyan321/TabRot/main/install.ps1 | iex
+irm https://tabrot.aenox.me/install.ps1 | iex
 ```
+*(Fallback mirror: `irm https://raw.githubusercontent.com/Ilyan321/TabRot/main/install.ps1 | iex`)*
 
 > **Then simply:** Open `chrome://extensions` → Enable **Developer mode** → Click **Load unpacked** and select `~/.tabrot-extension`. Done!
 
