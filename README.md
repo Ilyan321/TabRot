@@ -41,11 +41,27 @@ Every knowledge worker suffers from tab hoarding. You open a 3-hour tutorial vid
 
 ## 🚀 Quickstart & Installation
 
-### 1. Download & Install in Chrome (Zero Coding Required)
+### ⚡ 1-Line Terminal Install (Like Big Products)
+
+#### On macOS & Linux:
+```bash
+curl -fsSL https://raw.githubusercontent.com/Ilyan321/TabRot/main/install.sh | bash
+```
+
+#### On Windows (PowerShell):
+```powershell
+irm https://raw.githubusercontent.com/Ilyan321/TabRot/main/install.ps1 | iex
+```
+
+> **Then simply:** Open `chrome://extensions` → Enable **Developer mode** → Click **Load unpacked** and select `~/.tabrot-extension`. Done!
+
+---
+
+### 📦 Manual Download (Zip)
 1. Go to the [**TabRot v1.0.0 Releases Page**](https://github.com/Ilyan321/TabRot/releases/latest).
 2. Download **`tabrot-extension-v1.0.0.zip`** and extract it.
 3. In Chrome, open `chrome://extensions` and toggle on **Developer mode** (top-right corner).
-4. Click **Load unpacked** and select the unzipped `tabrot-extension-v1.0.0` folder.
+4. Click **Load unpacked** and select the unzipped folder.
 5. TabRot is now live on your toolbar!
 
 ---
