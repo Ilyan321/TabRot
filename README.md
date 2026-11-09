@@ -41,7 +41,16 @@ Every knowledge worker suffers from tab hoarding. You open a 3-hour tutorial vid
 
 ## 🚀 Quickstart & Installation
 
-### 1. Web Simulator Mode
+### 1. Download & Install in Chrome (Zero Coding Required)
+1. Go to the [**TabRot v1.0.0 Releases Page**](https://github.com/Ilyan321/TabRot/releases/latest).
+2. Download **`tabrot-extension-v1.0.0.zip`** and extract it.
+3. In Chrome, open `chrome://extensions` and toggle on **Developer mode** (top-right corner).
+4. Click **Load unpacked** and select the unzipped `tabrot-extension-v1.0.0` folder.
+5. TabRot is now live on your toolbar!
+
+---
+
+### 2. Run from Source (Web Simulator Mode)
 ```bash
 git clone https://github.com/Ilyan321/TabRot.git
 cd TabRot
@@ -50,15 +59,13 @@ npm run dev
 ```
 Open `http://localhost:5173/` in your browser.
 
-### 2. Loading as Google Chrome Extension
-1. Run the build:
+---
+
+### 3. Build Extension from Source
 ```bash
 npm run build
 ```
-2. Open Google Chrome and navigate to `chrome://extensions`.
-3. Toggle on **Developer mode** in the top-right corner.
-4. Click **Load unpacked** and select the root `dist` folder.
-5. Pin **TabRot** to your browser toolbar!
+Load the generated root `dist` folder via `chrome://extensions` -> **Load unpacked**.
 
 ---
 
